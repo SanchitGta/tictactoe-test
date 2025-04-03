@@ -1,21 +1,12 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
-function TaskForm() {
+function TaskForm({ addTask }) {
   const [title, setTitle] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    // Add a new task to the backend API
-    axios.post('/tasks', { title })
-      .then(() => {
-        // Clear the input field
-        setTitle('');
-      })
-      .catch(error => {
-        console.error('Error adding task:', error);
-      });
+    addTask(title);
+    setTitle('');
   };
 
   return (

@@ -1,33 +1,25 @@
 import React from 'react';
-import axios from 'axios';
 
-function TaskItem({ task }) {
+function TaskItem({ task, editTask, deleteTask, markComplete }) {
   const handleDelete = () => {
-    axios.delete(`/tasks/${task.id}`)
-      .then(() => {
-        // Refresh the task list
-        window.location.reload();
-      })
-      .catch(error => {
-        console.error('Error deleting task:', error);
-      });
+    deleteTask(task.id);
   };
 
   const handleComplete = () => {
-    axios.patch(`/tasks/${task.id}/complete`)
-      .then(() => {
-        // Refresh the task list
-        window.location.reload();
-      })
-      .catch(error => {
-        console.error('Error completing task:', error);
-      });
+    markComplete(task.id);
+  };
+
+  const handleEdit = () => {
+    const newTitle = prompt('Enter new title', task.title);
+    if (newTitle) {
+      editTask(task.id, newTitle);
+    }
   };
 
   return (
     <li>
       {task.title} - {task.completed ? 'Completed' : 'Pending'}
-      <button>Edit</button>
+      <button onClick={handleEdit}>Edit</button>
       <button onClick={handleDelete}>Delete</button>
       <button onClick={handleComplete}>{task.completed ? 'Mark Incomplete' : 'Complete'}</button>
     </li>
